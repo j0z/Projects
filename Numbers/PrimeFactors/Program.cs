@@ -11,17 +11,39 @@ namespace PrimeFactors
 
         static List<int> primes = new List<int>();
 
-        static void Main(string[] args)
+        static void Main()
         {
-            createPrimes(75000);
-            Console.Read();
+            Console.WriteLine("Please enter a number to factor, or 'quit' to quit");
+                string rawNumber = Console.ReadLine();
+                int number = int.Parse(rawNumber);
+                createPrimes(number);
+                List<int> factors = factor(number);
+                foreach (int x in factors)
+                {
+                    Console.WriteLine(x);
+                }
+                Console.Read();
         }
 
-        static void factor(int number)
+        static List<int> factor(int number, List<int> factors = null)
         {
-            List<int> factors = new List<int>();
+            if (factors == null)
+                factors = new List<int>(); 
 
+            foreach(int p in primes)
+            {
+                if(number % p == 0)
+                {
+                    factors.Add(p);
+                    if ((!primes.Exists(prime => prime == number)) && number != p)
+                    {
+                        factor(number / p, factors);
+                        break;
+                    }
+                }
+            }
 
+            return factors;
         }
 
         static void createPrimes(int max)
@@ -34,23 +56,7 @@ namespace PrimeFactors
                 n++;
             }
 
-
-            //foreach (int z in primes)
-            //{
-            //    Console.WriteLine(z);
-            //}
-            //Console.Read();
-
-            
             recSeive(max);
-
-            foreach (int x in primes)
-            {
-                Console.WriteLine(x); 
-                //Console.Read();
-            }
-            //Console.WriteLine(prime);
-            Console.Read();
         }
 
         static void recSeive(int max, int prime = 2)
