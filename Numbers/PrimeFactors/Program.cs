@@ -13,7 +13,8 @@ namespace PrimeFactors
 
         static void Main(string[] args)
         {
-            createPrimes(5);
+            createPrimes(75000);
+            Console.Read();
         }
 
         static void factor(int number)
@@ -32,13 +33,24 @@ namespace PrimeFactors
                 primes.Add(n);
                 n++;
             }
+
+
+            //foreach (int z in primes)
+            //{
+            //    Console.WriteLine(z);
+            //}
+            //Console.Read();
+
             
-            
-            foreach(int z in primes)
-            {
-                Console.WriteLine(z);
-            }
             recSeive(max);
+
+            foreach (int x in primes)
+            {
+                Console.WriteLine(x); 
+                //Console.Read();
+            }
+            //Console.WriteLine(prime);
+            Console.Read();
         }
 
         static void recSeive(int max, int prime = 2)
@@ -46,18 +58,30 @@ namespace PrimeFactors
             List<int> tPrimes = new List<int>(primes);
                 foreach (int y in tPrimes)
                 {
-                    if (y % prime != 0)
+                    if ((y % prime == 0) && (prime != y))
                     {
                         primes.Remove(y);
                     }
                 }
-                primes = tPrimes;
-                prime = primes.First();
-                Console.WriteLine(prime);
-            if(prime < max/2)
-            {
-                recSeive(max, prime);
-            }
+                tPrimes = primes;
+                if (prime != primes.Last())
+                {
+                    prime = primes[primes.FindIndex(p => p == prime) + 1];
+                }
+                else
+                {
+                    primes = tPrimes;
+                    return;
+                }
+
+                if (prime < max-1)
+                {
+                    recSeive(max, prime);
+                }
+                else
+                {
+                    primes = tPrimes;
+                }
         }
     }
 }
